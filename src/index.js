@@ -33,23 +33,25 @@ let shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 gl.useProgram(shaderProgram);
 
 
-
 initBuffersCube()
 
 let positionAttribLocationCube = enableVertexAttrib(
     shaderProgram,
     "vertPositions",
-    3, 6, 0);
+    3, 8, 0);
 gl.enableVertexAttribArray(positionAttribLocationCube);
 
 
 let normalLocation = enableVertexAttrib(
     shaderProgram,
     "a_normal",
-    3, 6, 3);
+    3, 8, 3);
 // Включаем атрибут нормалей
 gl.enableVertexAttribArray(normalLocation);
 
+let textureCoord = enableVertexAttrib(shaderProgram, "aTextureCoord", 2, 8,6);
+gl.enableVertexAttribArray(textureCoord);
+//let uSampler = gl.getUniformLocation(shaderProgram, 'uSampler');
 let matWorldLocationCube = gl.getUniformLocation(shaderProgram, "mWorld");
 let matViewLocationCube = gl.getUniformLocation(shaderProgram, "mView");
 let matProjLocationCube = gl.getUniformLocation(shaderProgram, "mProj");
@@ -145,11 +147,27 @@ document.addEventListener('keydown', (event) => {
             glMatrix.mat4.translate(rightCubeWMatx, rightCubeWMatx, [0, 0, step]);
             glMatrix.mat4.translate(topCubeWMatx, topCubeWMatx, [0, 0, step]);
             break
+        case "r":
+            step = 0.1
+            glMatrix.mat4.translate(leftCubeWMatx, leftCubeWMatx, [0, step, 0]);
+            glMatrix.mat4.translate(botCubeWMatx, botCubeWMatx, [0, step, 0]);
+            glMatrix.mat4.translate(rightCubeWMatx, rightCubeWMatx, [0, step, 0]);
+            glMatrix.mat4.translate(topCubeWMatx, topCubeWMatx, [0, step, 0]);
+            break
+        case "f":
+            step = -0.1
+            glMatrix.mat4.translate(leftCubeWMatx, leftCubeWMatx, [0, step, 0]);
+            glMatrix.mat4.translate(botCubeWMatx, botCubeWMatx, [0, step, 0]);
+            glMatrix.mat4.translate(rightCubeWMatx, rightCubeWMatx, [0, step, 0]);
+            glMatrix.mat4.translate(topCubeWMatx, topCubeWMatx, [0, step, 0]);
+            break
     }
 }, false);
 
 initBuffersCube()
+setTextures()
 // setNormals()
+//gl.bindBuffer(gl.ARRAY_BUFFER, textureCoord);
 gl.uniform3fv(lightWorldPositionLocation, [20, 30, 50]);
 function loop() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -159,7 +177,8 @@ function loop() {
     gl.uniform3fv(vecColors, [1, 0.84, 0])
     glMatrix.mat4.copy(worldMatrixCube, topCubeWMatx);
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
-
+    //gl.bindTexture(gl.TEXTURE_2D, texture);
+    //gl.activeTexture(gl.TEXTURE0);
     gl.drawArrays(gl.TRIANGLES, 0, 40);
 
 
