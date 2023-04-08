@@ -49,7 +49,7 @@ let normalLocation = enableVertexAttrib(
 // Включаем атрибут нормалей
 gl.enableVertexAttribArray(normalLocation);
 
-let textureCoord = enableVertexAttrib(shaderProgram, "aTextureCoord", 2, 8,6);
+let textureCoord = enableVertexAttrib(shaderProgram, "aTextureCoord", 2, 8, 6);
 gl.enableVertexAttribArray(textureCoord);
 //let uSampler = gl.getUniformLocation(shaderProgram, 'uSampler');
 let matWorldLocationCube = gl.getUniformLocation(shaderProgram, "mWorld");
@@ -64,7 +64,7 @@ let projMatrixCube = new Float32Array(16);
 let uColorsCube = [0.0, 0.0, 0.0]
 
 glMatrix.mat4.identity(worldMatrixCube)
-glMatrix.mat4.lookAt(viewMatrixCube, [0, 0, -20], [0, 0, 0], [0, 1, 0]);
+glMatrix.mat4.lookAt(viewMatrixCube, [0, 0, -10], [0, 0, 0], [0, 1, 0]);
 glMatrix.mat4.perspective(projMatrixCube, angle(45), canvas.width / canvas.height, 0.1, 1000.0);
 
 gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
@@ -165,10 +165,19 @@ document.addEventListener('keydown', (event) => {
 }, false);
 
 initBuffersCube()
-setTextures()
 // setNormals()
 //gl.bindBuffer(gl.ARRAY_BUFFER, textureCoord);
 gl.uniform3fv(lightWorldPositionLocation, [20, 30, 50]);
+
+// let texture2 = gl.createTexture();
+//
+// let image = new Image();
+// image.onload = function () {
+//     handleTextureLoaded(image, texture2);
+// }
+// image.src = "src//img//2.png";
+
+setTextures("src//img//1.png")
 function loop() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
@@ -177,16 +186,23 @@ function loop() {
     gl.uniform3fv(vecColors, [1, 0.84, 0])
     glMatrix.mat4.copy(worldMatrixCube, topCubeWMatx);
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
-    //gl.bindTexture(gl.TEXTURE_2D, texture);
-    //gl.activeTexture(gl.TEXTURE0);
     gl.drawArrays(gl.TRIANGLES, 0, 40);
+    //gl.bindTexture(gl.TEXTURE_2D, texture2);
+    //gl.activeTexture(gl.TEXTURE0);
 
 
     glMatrix.mat4.copy(worldMatrixCube, botCubeWMatx);
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
     gl.drawArrays(gl.TRIANGLES, 0, 40);
 
+    // let image = new Image();
+    // image.onload = function () {
+    //     handleTextureLoaded(image, texture);
+    // }
+    // image.src = "src//img//2.png";
+    // handleTextureLoaded(image, texture)
 
+    //setTextures("src//img//2.png")
     gl.uniform3fv(vecColors, [0.66, 0.66, 0.66])
     glMatrix.mat4.copy(worldMatrixCube, leftCubeWMatx);
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
@@ -198,8 +214,6 @@ function loop() {
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
     gl.drawArrays(gl.TRIANGLES, 0, 40);
 
-
     requestAnimationFrame(loop);
 }
-
 requestAnimationFrame(loop);
