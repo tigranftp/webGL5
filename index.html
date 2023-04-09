@@ -4,8 +4,14 @@
         <title>Lab5</title>
     </head>
     <body>
+
         <canvas id="pedestal" width="600px" height="600px">
         </canvas>
+        <div>
+            <input type="range" id="coef" name="coef"
+                   min="0" max="100">
+            <label for="coef">Coefficient of COLOR</label>
+        </div>
         <script src="src/gl-matrix.js"></script>
         <script src="src/shaders.js"></script>
         <script src="src/funcs.js"></script>

@@ -165,21 +165,35 @@ document.addEventListener('keydown', (event) => {
 }, false);
 
 initBuffersCube()
-// setNormals()
-//gl.bindBuffer(gl.ARRAY_BUFFER, textureCoord);
+
 gl.uniform3fv(lightWorldPositionLocation, [20, 30, 50]);
 
-// let texture2 = gl.createTexture();
-//
-// let image = new Image();
-// image.onload = function () {
-//     handleTextureLoaded(image, texture2);
-// }
-// image.src = "src//img//2.png";
+tex1 = registerTexture("src//img//1.png")
+tex1Mat = registerTexture("src//img//ice.jpg")
+tex2 = registerTexture("src//img//2.png")
+tex2Mat = registerTexture("src//img//fire.jpg")
+tex3 = registerTexture("src//img//3.png")
+tex3Mat = registerTexture("src//img//wood.jpg")
 
-setTextures("src//img//1.png")
-function loop() {
+let coefElement = document.getElementById('coef')
+let coefValue = coefElement.value
+
+let coefOfColorLocation = gl.getUniformLocation(shaderProgram, "coefOfColor");
+gl.uniform1f(coefOfColorLocation, coefElement.value/100);
+
+coefElement.addEventListener("input", () => {
+    gl.uniform1f(coefOfColorLocation, coefElement.value/100);
+    });
+
+    function loop() {
+
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex1);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, tex1Mat);
 
     gl.uniformMatrix4fv(matViewLocationCube, false, viewMatrixCube);
 
@@ -187,27 +201,32 @@ function loop() {
     glMatrix.mat4.copy(worldMatrixCube, topCubeWMatx);
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
     gl.drawArrays(gl.TRIANGLES, 0, 40);
-    //gl.bindTexture(gl.TEXTURE_2D, texture2);
-    //gl.activeTexture(gl.TEXTURE0);
+
+
+
 
 
     glMatrix.mat4.copy(worldMatrixCube, botCubeWMatx);
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
     gl.drawArrays(gl.TRIANGLES, 0, 40);
 
-    // let image = new Image();
-    // image.onload = function () {
-    //     handleTextureLoaded(image, texture);
-    // }
-    // image.src = "src//img//2.png";
-    // handleTextureLoaded(image, texture)
 
-    //setTextures("src//img//2.png")
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex2);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, tex2Mat);
+
     gl.uniform3fv(vecColors, [0.66, 0.66, 0.66])
     glMatrix.mat4.copy(worldMatrixCube, leftCubeWMatx);
     gl.uniformMatrix4fv(matWorldLocationCube, false, worldMatrixCube);
     gl.drawArrays(gl.TRIANGLES, 0, 40);
 
+
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex3);
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, tex3Mat);
 
     gl.uniform3fv(vecColors, [0.66, 0.57, 0.33])
     glMatrix.mat4.copy(worldMatrixCube, rightCubeWMatx);

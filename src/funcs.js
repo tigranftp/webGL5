@@ -209,6 +209,21 @@ function handleTextureLoaded(image, texture) {
 }
 
 
+
+function registerTexture(imgSRC) {
+    let texture = gl.createTexture();
+    let image = new Image();
+    image.onload = function () {
+        handleTextureLoaded(image, texture);
+    }
+    image.src = imgSRC;
+    shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+    shaderProgram.samplerUniform2 = gl.getUniformLocation(shaderProgram, "uSampler2");
+    gl.uniform1i(shaderProgram.samplerUniform,  0);
+    gl.uniform1i(shaderProgram.samplerUniform2,  1);
+    return texture
+}
+
 function setTextures(imgSRC) {
     let texture = gl.createTexture();
 
@@ -219,5 +234,5 @@ function setTextures(imgSRC) {
     }
     image.src = imgSRC;
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+    gl.uniform1i(shaderProgram.samplerUniform,  0);
 }
